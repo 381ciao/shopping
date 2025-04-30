@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    商品列表
+{% endblock %}
+
+{% block main %}
+	<main class="p-4 m-4 bg-white">
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <h3 class="ms-4">商品分類</h3>
+            <ul class="list-group">
+                <li class="list-group-item  {% if not category %}active{% endif %}">
+                    <a href="{% url 'products:product_list' %}" class="list-group-item list-group-item-action list-group-item-light">All</a>
+                </li>
+                {% for c in categories %}
+                <li class="list-group-item {% if category.slug == c.slug %}active{% endif %}">
+                    <a href="{% url 'products:product_list_by_category' c.slug %}" class="list-group-item list-group-item-action list-group-item-light">{{ c.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 ">
+                {% for product in products %}
+                    <div class="col mt-2">
+                  <div class="card shadow-sm">
+                      <a href="{{ product.get_absolute_url }}">
+                          <img src="{{ product.image.url }}" class="d-block w-100 border-bottom" alt="{{ product.name }}" height="250px">
+                      </a>
+                      <div class="card-body">
+                          <p class="card-text display-5">{{ product.name}}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                  <a href="{{ product.get_absolute_url }}" type="button" class="btn btn-sm btn-outline-secondary">查看詳情</a>
+                              </div>
+                              <p class="display-6 text-danger ">￥{{ product.price }}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">No products found in this category.</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+    </main>
+{% endblock %}

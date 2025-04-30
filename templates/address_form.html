@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if address %}编辑收货地址{% else %}添加收货地址{% endif %}
+{% endblock %}
+
+{% block main %}
+<div class="container mt-4 bg-white">
+    <h2 class="m-auto w-25 mb-3" >编辑收货地址</h2>
+    <hr>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form class="needs-validation w-50 m-auto" action="" method="post" >
+        {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label" _msttexthash="4389879" _msthash="22" style="direction: ltr; text-align: left;">收货人名字</label>
+              <input type="text" class="form-control"   value="{{ address.receiver_name }}" required="" name="receiver_name">
+              <div class="invalid-feedback" _msttexthash="6300827" _msthidden="1" _msthash="23">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label" _msttexthash="2092545" _msthash="24" style="direction: ltr; text-align: left;">收货人电话</label>
+              <input type="text" class="form-control" placeholder="" value="{{ address.receiver_phone }}" required="" name="receiver_phone">
+              <div class="invalid-feedback" _msttexthash="7386340" _msthidden="1" _msthash="25">
+              </div>
+            </div>
+
+              <div class="form-group">
+                  <label for="id_province">省</label>
+                <select class="form-select" id="id_province" name="province" required>
+                    <option value="">-- 选择省 --</option>
+                    {% for province in provinces %}
+                    <option value="{{ province.id }}" {% if form.province.value == province.id %}selected{% endif %}>
+                        {{ province.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="id_city">市</label>
+                <select class="form-select" id="id_city" name="city" required>
+                    <option value="">-- 选择市 --</option>
+                    {% if form.city.value %}
+                    {% for city in cities %}
+                    <option value="{{ city.id }}" {% if form.city.value == city.id %}selected{% endif %}>
+                        {{ city.name }}
+                    </option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="id_district">区/县</label>
+                <select class="form-select" id="id_district" name="district" required>
+                    <option value="">-- 选择区/县 --</option>
+                    {% if form.district.value %}
+                    {% for district in districts %}
+                    <option value="{{ district.id }}" {% if form.district.value == district.id %}selected{% endif %}>
+                        {{ district.name }}
+                    </option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+              </div>
+
+            <div class="col-12">
+              <label for="address" class="form-label" _msttexthash="4170335" _msthash="32" style="direction: ltr; text-align: left;">详情地址</label>
+              <input type="text" class="form-control" required="" _mstplaceholder="3660696" _msthash="33" style="direction: ltr; text-align: left;"
+              name="detailed_address" value="{{ address.detailed_address }}">
+              <div class="invalid-feedback" _msttexthash="10498332" _msthidden="1" _msthash="34">
+              </div>
+            </div>
+
+              <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="1" name="is_default">
+                  <label class="form-check-label" for="flexCheckDefault">
+                      设为默认地址
+                  </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" name="submit">确认添加</button>
+
+
+          </div>
+        </form>
+</div>
+
+<script>
+// 三级联动JavaScript代码
+document.getElementById('id_province').addEventListener('change', function() {
+    const provinceId = this.value;
+    if (provinceId) {
+        fetch(`/accounts/get_cities/${provinceId}/`)
+            .then(response => response.json())
+            .then(data => {
+                const citySelect = document.getElementById('id_city');
+                citySelect.innerHTML = '<option value="">-- 选择市 --</option>';
+                data.forEach(city => {
+                    citySelect.innerHTML += `<option value="${city.id}">${city.name}</option>`;
+                });
+                // 清空区县
+                document.getElementById('id_district').innerHTML = '<option value="">-- 选择区/县 --</option>';
+            });
+    }
+});
+
+document.getElementById('id_city').addEventListener('change', function() {
+    const cityId = this.value;
+    if (cityId) {
+        fetch(`/accounts/get_districts/${cityId}/`)
+            .then(response => response.json())
+            .then(data => {
+                const districtSelect = document.getElementById('id_district');
+                districtSelect.innerHTML = '<option value="">-- 选择区/县 --</option>';
+                data.forEach(district => {
+                    districtSelect.innerHTML += `<option value="${district.id}">${district.name}</option>`;
+                });
+            });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SHOPPING--{% block title %}{% endblock %}</title>
+
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'jquery/jquery-3.7.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" >
+                <img src="{% static 'image/logo.webp' %}" height="40px">
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'products:index' %}" class="nav-link px-2 text-white">首页</a></li>
+                <li><a href="{% url 'products:product_list' %}" class="nav-link px-2 text-white">商品</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">购物车</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">订单</a></li>
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'products:product_search' %}" method="get">
+                <input type="search" class="form-control form-control-dark text-white" placeholder="搜索" name="query"
+                       aria-label="Search">
+            </form>
+
+            {% if user.is_authenticated %}
+                <div class="dropdown text-end">
+                    <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="{% static 'image/user.jpg' %}" alt="mdo" width="40" height="35" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="#">訂單</a></li>
+                        <li><a class="dropdown-item" href="#">購物車</a></li>
+                        <li><a class="dropdown-item" href="{% url 'accounts:address_list' %}">收穫地址</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'accounts:account_logout' %}">賬號退出</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="text-end">
+                    <a href="{% url 'accounts:account_login' %}" type="button"
+                       class="btn btn-outline-light me-2">登录</a>
+                    <a href="{% url 'accounts:account_register' %}" type="button" class="btn btn-warning">注册</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</header>
+{% block main %}{% endblock %}
+<footer class="bg-white">
+    <div class="container">
+  <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+    <div class="col mb-3">
+      <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><img src="{% static 'image/logo.webp' %}" height="60px"></svg>
+      </a>
+    </div>
+
+    <div class="col mb-3">
+
+    </div>
+
+    <div class="col mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+
+    <div class="col mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+
+    <div class="col mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+  </footer>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block main %}
+{#商品信息#}
+<div class="container bg-white mt-2 p-2 rounded">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <h2>
+                <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+            </h2>
+            <p class="price">${{ product.price }}</p>
+            <form action="" method="post">
+{#                {{ cart_product_form }}#}
+                {% csrf_token %}
+                <input type="submit" value="加入购物车" class="btn btn-primary">
+                <input type="submit" value="直接购买" class="btn btn-warning">
+            </form>
+        </div>
+        <div>
+            {{ product.description|linebreaks }}
+        </div>
+    </div>
+</div>
+{#    商品评论#}
+    <div class="container bg-white mt-2 p-2 rounded">
+    <h2>评论({{ product.comments.all|length }}):</h2>
+        <form action="{% url 'products:product_comment' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="text" class="form-control" name="content"
+                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">发布评论</button>
+            </div>
+        </form>
+    <div>
+        <ul class="list-group list-group-flush">
+            {% for comment in product.comments.all %}
+                <li class="list-group-item ">
+                    <div class="d-flex justify-content-between text-secondary-emphasis">
+                        <div>
+                            <img src="{% static 'image/user.jpg' %}" class="rounded-circle" height="20px"
+                                 width="20px" alt="">
+                            <span>{{ comment.user.username }}</span>
+                        </div>
+                        <div> {{ comment.pub_time|date:'Y年m月d日 h时i分' }}</div>
+                    </div>
+                    <div class="mt-2">
+                        {{ comment.content }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+{% endblock %}
+

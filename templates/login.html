@@ -1,71 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>登录</title>
+{% extends 'base.html' %}
 
-    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
-    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'jquery/jquery-3.7.1.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% block title %}
+	登录
+{% endblock %}
 
-</head>
-<body>
-<header class="p-3 text-bg-dark">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" >
-                <img src="{% static 'image/logo.webp' %}" height="40px">
-            </a>
+{% block main %}
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-secondary">首页</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">商品</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">购物车</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">订单</a></li>
-            </ul>
+{#    <div class="m-auto p-1" style="max-width: 330px">#}
+{#            <h1>登录</h1>#}
+{#        <form action="" method="post">#}
+{#            {% csrf_token %}#}
+{#            <div class="mb-3">#}
+{#                <label for="exampleInputEmail1" class="form-label">邮箱</label>#}
+{#                <input type="email" class="form-control" name="email">#}
+{#            </div>#}
+{#            <div class="mb-3">#}
+{#                <label for="exampleInputPassword1" class="form-label">密码</label>#}
+{#                <input type="password" class="form-control" name="password">#}
+{#            </div>#}
+{#            <div class="mb-3 form-check">#}
+{#                <input type="checkbox" class="form-check-input" name="remeber" value="1">#}
+{#                <label class="form-check-label" for="exampleCheck1">记住我</label>#}
+{#            </div>#}
+{#            <div>#}
+{#                <button type="submit" class="btn btn-primary w-100">立即登录</button>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+    <div class="modal modal-signin position-static d-block py-5" tabindex="-1" role="dialog"
+         id="modalSignin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header p-5 pb-4 border-bottom-0">
+                    <!-- <h1 class="modal-title fs-5" >Modal title</h1> -->
+                    <h1 class="fw-bold mb-0 fs-2">欢迎登录</h1>
+                </div>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark"
-                       aria-label="Search">
-            </form>
-
-            <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">登录</button>
-                <button type="button" class="btn btn-warning">注册</button>
-            </div>
-        </div>
-    </div>
-</header>
-<main class="bg-white container p-2 mt-2 rounded">
-    <div class="w-50 p-4 m-auto">
-        <div class="my-4 m-auto w-25"  >
-            <h1>登录</h1>
-        </div>
-        <form action="" method="post">
-            <div class="mb-3">
-                <label for="formGroupExampleInput" class="form-label">邮箱账号</label>
-                <input type="email" class="form-control" name="email">
-            </div>
-            <div class="mb-3">
-                <label for="formGroupExampleInput2" class="form-label">密码</label>
-                <input type="password" class="form-control" name="password">
-            </div>
-            <div class="my-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">
-                        记住我
-                    </label>
+                <div class="modal-body p-5 pt-0">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-3" name="email"
+                                   placeholder="name@example.com">
+                            <label for="floatingInput">邮箱账号</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-3" name="password"
+                                   placeholder="Password">
+                            <label for="floatingPassword">密码</label>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" name="remeber" value="1">
+                            <label class="form-check-label" for="exampleCheck1">记住我</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">立即登录</button>
+                        <hr class="my-4">
+                        <h2 class="fs-5 fw-bold mb-3">欢迎入驻</h2>
+                        <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="submit">
+                            <svg class="bi me-1" width="16" height="16">
+                            </svg>
+                            管理员登录
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="button">立即登录</button>
-            </div>
-        </form>
+        </div>
     </div>
-</main>
-</body>
-</html>
+
+{% endblock %}

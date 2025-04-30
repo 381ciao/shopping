@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	添加收货地址
+{% endblock %}
+
+{% block head %}
+	<script src="{% static 'js/address_add.js' %}"></script>
+    <script src="{% static 'jquery/jquery-3.7.1.min.js' %}"></script>
+
+    <script>
+    $(document).ready(function () {
+    // 省份改变时加载城市
+    $('#province').change(function () {
+      var provinceId = $(this).val();
+      if (provinceId) {
+        $.get('/accounts/get_cities/' + provinceId + '/', function (data) {
+          $('#city').empty().append('<option value="">-- 选择城市 --</option>');
+          $.each(data, function (i, city) {
+            $('#city').append($('<option>').attr('value', city.id).text(city.name));
+          });
+          $('#city').prop('disabled', false);
+          $('#district').prop('disabled', true).empty().append('<option value="">-- 选择区县 --</option>');
+        });
+      }
+    });
+
+    // 城市改变时加载区县
+    $('#city').change(function () {
+      var cityId = $(this).val();
+      if (cityId) {
+        $.get('/accounts/get_districts/' + cityId + '/', function (data) {
+          $('#district').empty().append('<option value="">-- 选择区县 --</option>');
+          $.each(data, function (i, district) {
+            $('#district').append($('<option>').attr('value', district.id).text(district.name));
+          });
+          $('#district').prop('disabled', false);
+        });
+      }
+    });
+  });
+    </script>
+
+{% endblock %}
+
+{% block main %}
+    <main class="p-4 m-4 bg-white">
+    <h2 class="m-auto w-25 mb-3" >添加收货地址</h2>
+        <hr>
+    <form class="needs-validation w-50 m-auto" action="" method="post" >
+        {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label" _msttexthash="4389879" _msthash="22" style="direction: ltr; text-align: left;">收货人名字</label>
+              <input type="text" class="form-control"  placeholder="" value="" required="" name="receiver_name">
+              <div class="invalid-feedback" _msttexthash="6300827" _msthidden="1" _msthash="23">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label" _msttexthash="2092545" _msthash="24" style="direction: ltr; text-align: left;">收货人电话</label>
+              <input type="text" class="form-control" placeholder="" value="" required="" name="receiver_phone">
+              <div class="invalid-feedback" _msttexthash="7386340" _msthidden="1" _msthash="25">
+              </div>
+            </div>
+
+              <div class="form-group">
+                  <label>省份</label>
+                  <select id="province" name="province" class="form-control">
+                      <option value="">-- 选择省份 --</option>
+                      {% for province in provinces %}
+                          <option value="{{ province.id }}">{{ province.name }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label>城市</label>
+                  <select id="city" name="city" class="form-control" disabled>
+                      <option value="">-- 选择城市 --</option>
+                  </select>
+              </div>
+
+              <div class="form-group">
+                  <label>区县</label>
+                  <select id="district" name="district" class="form-control" disabled>
+                      <option value="">-- 选择区县 --</option>
+                  </select>
+              </div>
+
+
+            <div class="col-12">
+              <label for="address" class="form-label" _msttexthash="4170335" _msthash="32" style="direction: ltr; text-align: left;">详情地址</label>
+              <input type="text" class="form-control" required="" _mstplaceholder="3660696" _msthash="33" style="direction: ltr; text-align: left;"
+              name="detailed_address">
+              <div class="invalid-feedback" _msttexthash="10498332" _msthidden="1" _msthash="34">
+              </div>
+            </div>
+
+              <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="1" name="is_default">
+                  <label class="form-check-label" for="flexCheckDefault">
+                      设为默认地址
+                  </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" name="submit">确认添加</button>
+
+
+          </div>
+        </form>
+    </main>
+
+{% endblock %}

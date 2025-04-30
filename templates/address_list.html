@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	收货地址列表
+{% endblock %}
+
+{% block main %}
+<div class="container mt-4 bg-white p-2">
+    <div class="d-flex justify-content-between align-items-center m-2">
+        <h2>我的收货地址</h2>
+        <a href="{% url 'accounts:address_add' %}" class="btn btn-primary">
+            <i class="bi bi-plus"></i> 添加新地址
+        </a>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+
+    <div class="row p-2">
+        {% for address in addresses %}
+        <div class="col-md-6 mb-4">
+            <div class="card {% if address.is_default %}border-primary{% endif %}">
+                <div class="card-body">
+                    <!-- 在地址卡片部分更新操作按钮 -->
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">
+                            {{ address.receiver_name }}
+                            <span class="badge bg-primary">{{ address.receiver_phone }}</span>
+                            <span class="badge bg-primary">{{ address.province }}</span>
+                            <span class="badge bg-primary">{{ address.city }}</span>
+                            <span class="badge bg-primary">{{ address.district }}</span>
+                            {% if address.is_default %}
+                                <span class="badge bg-success">默认</span>
+                            {% endif %}
+                        </h5>
+                        <div>
+                            <a href="{% url 'accounts:address_update' address.id %}"
+                               class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil">编辑</i>
+                            </a>
+                            <a href="{% url 'accounts:address_delete' address.id %}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('确定要删除这个地址吗？')">
+                                <i class="bi bi-trash">删除</i>
+                            </a>
+                        </div>
+                    </div>
+                <div>
+                    <h6>{{ address.detailed_address }}</h6>
+                </div>
+                    <!-- 更新设为默认按钮 -->
+                    {% if not address.is_default %}
+                        <form method="post" action="{% url 'accounts:set_default_address' address.id %}"
+                              class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-primary">
+                                设为默认
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                您还没有添加收货地址，<a href="">点击添加</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
